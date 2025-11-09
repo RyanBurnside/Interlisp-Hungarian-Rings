@@ -12,6 +12,6 @@ To play the game you have two options.
 
 *OFFLINE* https://interlisp.org/software/install-and-run/
 1. Place the file in the root directory of your medley install and follow steps 2 onward.
-This is '~/il/' for me on Linux. Consult the docs for where your root directory for medley is otherwise.
+This is '~/il/' for me on Linux. Consult the docs for where your root directory for Medley is otherwise.
 
 <img width="1920" height="1030" alt="Screenshot_20251109_001737" src="https://github.com/user-attachments/assets/d6d38935-06ef-43e4-99c0-defbaff9be64" />
