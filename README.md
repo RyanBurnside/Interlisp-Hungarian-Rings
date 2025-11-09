@@ -3,8 +3,8 @@ This is a variation on the Hungarian Rings puzzle written in Interlisp for the M
 To play the game you have two options. The online emulator provides very easy access but if you're interested in a real Lisp OS, eventually you'll want a personal copy.
 
 *ONLINE* https://interlisp.org/software/access-online/
-1. Use the online Medley Environment and upload the RING.LISP file using the button on the VM there. (last button on the desktop)
-2. Once, you've uploaded the file, right click a blank space on the desktop and select EXEC from the menu. (Drag out the window it's prompting for)
+1. Use the online Medley Environment and upload the RING.LISP file using the "IMPORT/EXPORT" button on the VM there. In the window, drag your copy  of RING.LISP over.
+2. Once, you've uploaded the RING.LISP file move back to the Interlisp desktop. Right click a blank space on the desktop and select EXEC from the menu. (Drag out the window it's prompting for)
 3. Type (LOAD "RING.LISP") to load the file you've uploaded.
 4. In the same Exec window type (HUNGARIAN.RINGS) and the game will prompt you to position 2 windows. One is the live puzzle and the other is a card with a solved picture.
 5. To play the game simply click inside the loop you wish to shift. Left click rotates left, right rotates right.
