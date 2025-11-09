@@ -1,27 +1,25 @@
 (DEFINE-FILE-INFO PACKAGE "INTERLISP" READTABLE "INTERLISP" BASE 10)
 
-(FILECREATED " 8-Nov-2025 21:54:13" {DSK}<home>ryan>il>RING.LISP;31 10082  
+(FILECREATED " 9-Nov-2025 15:49:52" {DSK}<home>ryan>il>RING.LISP;34 9814   
 
-      :CHANGES-TO (FNS CLICK.FN PICK.RING.BY.ANGLE)
-                  (VARS RINGCOMS)
+      :CHANGES-TO (FNS HUNGARIAN.RINGS)
 
-      :PREVIOUS-DATE " 8-Nov-2025 20:52:04" {DSK}<home>ryan>il>RING.LISP;30)
+      :PREVIOUS-DATE " 9-Nov-2025 15:20:33" {DSK}<home>ryan>il>RING.LISP;33)
 
 
 (PRETTYCOMPRINT RINGCOMS)
 
 (RPAQQ RINGCOMS ((FNS BALL.CORRECT.P CHOOSE CLICK.FN COMPUTE.ANGLE CREATE.BALL DRAW.BALL DRAW.RINGS 
-                      FORM.3.RINGS GAME.WON.P HUNGARIAN.RINGS LIST.TO.ARRAY LOAD.RING.GRAPHICS 
-                      MAKE.CIRCLES NGON.RADIUS PICK.RING.BY.ANGLE PLAY.RING SHIFT.BALL.COLORS 
-                      SHUFFLE.RINGS)
+                      FORM.3.RINGS GAME.WON.P HUNGARIAN.RINGS MAKE.CIRCLES NGON.RADIUS 
+                      PICK.RING.BY.ANGLE SHIFT.BALL.COLORS SHUFFLE.RINGS)
                  (RECORDS BALL GAME.STATE)))
 (DEFINEQ
 
 (BALL.CORRECT.P
   [LAMBDA (BALL)
     "DOCSTRING TESTINGS"
-    (EQP (FETCH COLOR OF BALL)
-         (FETCH CORRECT.COLOR OF B])
+    (EQP (fetch COLOR of BALL)
+         (fetch CORRECT.COLOR of BALL])
 
 (CHOOSE
   [LAMBDA (LIST)
@@ -54,7 +52,9 @@
                          (SHIFT.BALL.COLORS (PICK.RING.BY.ANGLE CIRCS.LIST ANGLE)
                                 ROT.DIR)
                          (DRAW.RINGS CIRCS.LIST BUFFER.STREAM)
-                         (BITBLT WIN.BITMAP 0 0 W])
+                         (BITBLT WIN.BITMAP 0 0 W)
+                         (if (GAME.WON.P CIRCS.LIST)
+                             then (RPTQ 3 (RINGBELLS])
 
 (COMPUTE.ANGLE
   [LAMBDA (X Y X2 Y2)
@@ -67,6 +67,9 @@
 
 (CREATE.BALL
   [LAMBDA (X Y COLOR CORRECT.COLOR)
+
+    (* ;; "A BALL simply holds color and position data in the game")
+
     (create BALL
            X _ X
            Y _ Y
@@ -74,7 +77,10 @@
            CORRECT.COLOR _ (OR CORRECT.COLOR COLOR])
 
 (DRAW.BALL
-  [LAMBDA (BALL IMAGE-ARRAY STREAM)
+  [LAMBDA (BALL STREAM)
+
+    (* ;; "Render a BALL, ")
+
     (with BALL BALL (LET [(SHADE (CASE COLOR
                                      ((0) GRAYSHADE2)
                                      ((1) GRAYSHADE)
@@ -96,10 +102,16 @@
 
 (DRAW.RINGS
   [LAMBDA (BALL.LISTS BUFFER.STREAM)
-    (for BL in BALL.LISTS do (for I in BL do (with BALL I NIL (DRAW.BALL I NIL BUFFER.STREAM])
+
+    (* ;; "BALL.LISTS is a list of BALL lists.")
+
+    (for BL in BALL.LISTS do (for I in BL do (with BALL I NIL (DRAW.BALL I BUFFER.STREAM])
 
 (FORM.3.RINGS
   [LAMBDA (CX CY)
+
+    (* ;; "Makes a list of 3 BALL containing lists with shared structure for the overlaps.")
+
     (LET* ((N 18.0)
            (LS 32.0)
            (A.X (+ CX 68.3382))
@@ -109,10 +121,10 @@
            (C.X (- CX 34.1691))
            (C.Y (+ CY 59.182602))
            (STEP.ANGLE (/ 360.0 N))
-           (RADIUS (NGON.RADIUS N LS))
-           (CIRC.LIST.A (MAKE.CIRCLES A.X A.Y N LS 0.0 0))
-           (CIRC.LIST.B (MAKE.CIRCLES B.X B.Y N LS 0.0 1))
-           (CIRC.LIST.C (MAKE.CIRCLES C.X C.Y N LS 0.0 2)))
+           (RADIUS (NGON.RADIUS N LS))
+           (CIRC.LIST.A (MAKE.CIRCLES A.X A.Y N LS 0.0 0))
+           (CIRC.LIST.B (MAKE.CIRCLES B.X B.Y N LS 0.0 1))
+           (CIRC.LIST.C (MAKE.CIRCLES C.X C.Y N LS 0.0 2)))
           (RPLACA (NTH CIRC.LIST.A 9)
                  (CAR (NTH CIRC.LIST.B 5)))
           (RPLACA (NTH CIRC.LIST.A 6)
@@ -128,13 +140,13 @@
           (LIST CIRC.LIST.A CIRC.LIST.B CIRC.LIST.C])
 
 (GAME.WON.P
-  [LAMBDA (BALL.LIST)
-    (EVERY BALL.LIST 'BALL.CORRECT.P])
+  [LAMBDA (BALL.LISTS)
+    (APPLY 'AND (for BL in BALL.LISTS collect (EVERY BL 'BALL.CORRECT.P])
 
 (HUNGARIAN.RINGS
   [LAMBDA NIL
     (LET* ((W (DECODE.WINDOW.ARG NIL 480.0 480.0 
-                     "HUNGARIAN RINGS (Mouse btns rotate. Middle click for menu..)"))
+                     "HUNGARIAN RINGS (Mouse btns rotate. Middle click for menu.)"))
            (SOLVE.WINDOW (DECODE.WINDOW.ARG NIL 480.0 480.0 "SOLUTION PICTURE (EXACT POSITIONS)"))
            [WIN.BITMAP (BITMAPCREATE (WINDOWPROP W 'WIDTH)
                               (WINDOWPROP W 'HEIGHT]
@@ -170,23 +182,11 @@
           (WINDOWPROP W 'RIGHTBUTTONFN 'CLICK.FN)
           W])
 
-(LIST.TO.ARRAY
-  [LAMBDA (LIST ORIG)
-    (LET* ((START (if (ZEROP ORIG)
-                      then 0
-                    else 1))
-           (A (ARRAY (LENGTH LIST)
-                     'POINTER NIL START)))
-          (for X in LIST as I from START do (PRINT I)
-                                            (SETA A I X))
-          A])
-
-(LOAD.RING.GRAPHICS
-  [LAMBDA (FNAME)
-    (PRINT "NOT IMPLEMENTED YET."])
-
 (MAKE.CIRCLES
   [LAMBDA (CX CY N CIRCLES.DIAMETER START.DEGREES BALL.COLOR)
+
+    (* ;; "This function forms a list of BALL objects in a ring pattern.")
+
     (LET* ((START.DEGREES (OR START.DEGREES 0))
            (STEP.ANGLE (/ 360.0 N))
            (RADIUS (NGON.RADIUS N CIRCLES.DIAMETER)))
@@ -204,6 +204,9 @@
 
 (PICK.RING.BY.ANGLE
   [LAMBDA (CIRCS.LIST ANGLE)
+
+    (* ;; "Given an angle from the game center, selects the correct ring list to rotate.")
+
     (COND
        ((AND (> ANGLE 60)
              (<= ANGLE 180))
@@ -212,17 +215,6 @@
              (<= ANGLE 300))
         (CAR (NTH CIRCS.LIST 2)))
        (T (CAR (NTH CIRCS.LIST 1])
-
-(PLAY.RING
-  [LAMBDA NIL
-    (LET* ((W 800)
-           (H 600)
-           (WIN (DECODE.WINDOW.ARG NIL W H "HUNGARIAN RINGS")))
-          (WINDOWADDPROP WIN 'LEVEL.LAYOUT)
-          (WINDOWADDPROP WIN 'BALLS NIL)
-          (WINDOWADDPROP WIN 'BUTTONS NIL)
-          (WINDOWADDPROP WIN 'RINGS NIL)
-          WIN])
 
 (SHIFT.BALL.COLORS
   [LAMBDA (BALL.LIST DIRECTION NUM.TIMES)                    (* ; "DIRECTION MAYBE 1  (CLOCKWISE) OR -1 (COUNTER-CLOCKWISE) THE BALLS NEVER CHANGE POSITION IN THE LIST BUT THEIR COLORS DO")
@@ -254,10 +246,9 @@
 (RECORD GAME.STATE (CIRCS.LIST BUFFER.STREAM WIN.BITMAP))
 )
 (DECLARE%: DONTCOPY
-  (FILEMAP (NIL (727 9925 (BALL.CORRECT.P 737 . 882) (CHOOSE 884 . 954) (CLICK.FN 956 . 2153) (
-COMPUTE.ANGLE 2155 . 2385) (CREATE.BALL 2387 . 2579) (DRAW.BALL 2581 . 3574) (DRAW.RINGS 3576 . 3755) 
-(FORM.3.RINGS 3757 . 4822) (GAME.WON.P 4824 . 4900) (HUNGARIAN.RINGS 4902 . 6495) (LIST.TO.ARRAY 6497
- . 6866) (LOAD.RING.GRAPHICS 6868 . 6945) (MAKE.CIRCLES 6947 . 7771) (NGON.RADIUS 7773 . 7873) (
-PICK.RING.BY.ANGLE 7875 . 8151) (PLAY.RING 8153 . 8468) (SHIFT.BALL.COLORS 8470 . 9382) (SHUFFLE.RINGS
- 9384 . 9923)))))
+  (FILEMAP (NIL (615 9657 (BALL.CORRECT.P 625 . 773) (CHOOSE 775 . 845) (CLICK.FN 847 . 2163) (
+COMPUTE.ANGLE 2165 . 2395) (CREATE.BALL 2397 . 2664) (DRAW.BALL 2666 . 3682) (DRAW.RINGS 3684 . 3914) 
+(FORM.3.RINGS 3916 . 5096) (GAME.WON.P 5098 . 5222) (HUNGARIAN.RINGS 5224 . 6816) (MAKE.CIRCLES 6818
+ . 7723) (NGON.RADIUS 7725 . 7825) (PICK.RING.BY.ANGLE 7827 . 8200) (SHIFT.BALL.COLORS 8202 . 9114) (
+SHUFFLE.RINGS 9116 . 9655)))))
 STOP
