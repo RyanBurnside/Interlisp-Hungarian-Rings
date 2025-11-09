@@ -1,6 +1,6 @@
 This is a variation on the Hungarian Rings puzzle written in Interlisp for the Medley Interlisp system.
 
-To play the game you have two options.
+To play the game you have two options. The online emulator provides very easy access but if you're interested in a real Lisp OS, eventually you'll want a personal copy.
 
 *ONLINE* https://interlisp.org/software/access-online/
 1. Use the online Medley Environment and upload the RING.LISP file using the button on the VM there. (last button on the desktop)
