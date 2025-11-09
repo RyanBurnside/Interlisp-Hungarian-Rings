@@ -1,4 +1,4 @@
-This is a variation on the Hungarian Rings puzzle written in InterLisp for the Medley Interlisp system.
+This is a variation on the Hungarian Rings puzzle written in Interlisp for the Medley Interlisp system.
 
 To play the game you have two options.
 
