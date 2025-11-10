@@ -1,5 +1,11 @@
 This is a variation on the Hungarian Rings puzzle written in Interlisp for the Medley Interlisp system.
 
+Playing: 
+The object of the game is to make the puzzle match the included picture.
+Click inside the rings to rotate them. Left (Mouse left button) or right (Mouse right button).*
+
+*The game selects a ring to rotate by using the angle from the center of the screen so you don't technically have to be inside a ring.
+
 To play the game you have two options. The online emulator provides very easy access but if you're interested in a real Lisp OS, eventually you'll want a personal copy.
 
 *ONLINE* https://interlisp.org/software/access-online/
