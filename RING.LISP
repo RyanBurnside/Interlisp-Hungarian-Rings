@@ -1,10 +1,10 @@
 (DEFINE-FILE-INFO PACKAGE "INTERLISP" READTABLE "INTERLISP" BASE 10)
 
-(FILECREATED " 9-Nov-2025 15:49:52" {DSK}<home>ryan>il>RING.LISP;34 9814   
+(FILECREATED "12-Nov-2025 21:08:55" {DSK}<home>ryan>il>RING.LISP;35 10008  
 
-      :CHANGES-TO (FNS HUNGARIAN.RINGS)
+      :CHANGES-TO (FNS DRAW.BALL)
 
-      :PREVIOUS-DATE " 9-Nov-2025 15:20:33" {DSK}<home>ryan>il>RING.LISP;33)
+      :PREVIOUS-DATE " 9-Nov-2025 15:49:52" {DSK}<home>ryan>il>RING.LISP;34)
 
 
 (PRETTYCOMPRINT RINGCOMS)
@@ -81,24 +81,28 @@
 
     (* ;; "Render a BALL, ")
 
-    (with BALL BALL (LET [(SHADE (CASE COLOR
-                                     ((0) GRAYSHADE2)
-                                     ((1) GRAYSHADE)
-                                     ((2) GRAYSHADE3)
-                                     ((4) GRAYSHADE4)))
-                          (SHADEBASE (CASE COLOR
-                                         ((0) GRAYSHADE)
-                                         ((1) GRAYSHADE3)
-                                         ((2) BLACKSHADE)
-                                         ((4) BLACKSHADE))]
-                         (FILLCIRCLE X Y 16 SHADEBASE STREAM)
-                         (FILLCIRCLE (- X 3)
-                                (+ Y 3)
-                                11 SHADE STREAM)
-                         (DRAWCIRCLE X Y 16 NIL NIL STREAM)
-                         (FILLCIRCLE (- X 6)
-                                (+ Y 6)
-                                4 WHITESHADE STREAM])
+    (with BALL BALL (LET* [(GRAYSHADE2 1025)
+                           (GRAYSHADE 43605)
+                           (GRAYSHADE3 64510)
+                           (GRAYSHADE4 65534)
+                           (SHADE (CASE COLOR
+                                      ((0) GRAYSHADE2)
+                                      ((1) GRAYSHADE)
+                                      ((2) GRAYSHADE3)
+                                      ((4) GRAYSHADE4)))
+                           (SHADEBASE (CASE COLOR
+                                          ((0) GRAYSHADE)
+                                          ((1) GRAYSHADE3)
+                                          ((2) BLACKSHADE)
+                                          ((4) BLACKSHADE))]
+                          (FILLCIRCLE X Y 16 SHADEBASE STREAM)
+                          (FILLCIRCLE (- X 3)
+                                 (+ Y 3)
+                                 11 SHADE STREAM)
+                          (DRAWCIRCLE X Y 16 NIL NIL STREAM)
+                          (FILLCIRCLE (- X 6)
+                                 (+ Y 6)
+                                 4 WHITESHADE STREAM])
 
 (DRAW.RINGS
   [LAMBDA (BALL.LISTS BUFFER.STREAM)
@@ -246,9 +250,9 @@
 (RECORD GAME.STATE (CIRCS.LIST BUFFER.STREAM WIN.BITMAP))
 )
 (DECLARE%: DONTCOPY
-  (FILEMAP (NIL (615 9657 (BALL.CORRECT.P 625 . 773) (CHOOSE 775 . 845) (CLICK.FN 847 . 2163) (
-COMPUTE.ANGLE 2165 . 2395) (CREATE.BALL 2397 . 2664) (DRAW.BALL 2666 . 3682) (DRAW.RINGS 3684 . 3914) 
-(FORM.3.RINGS 3916 . 5096) (GAME.WON.P 5098 . 5222) (HUNGARIAN.RINGS 5224 . 6816) (MAKE.CIRCLES 6818
- . 7723) (NGON.RADIUS 7725 . 7825) (PICK.RING.BY.ANGLE 7827 . 8200) (SHIFT.BALL.COLORS 8202 . 9114) (
-SHUFFLE.RINGS 9116 . 9655)))))
+  (FILEMAP (NIL (609 9851 (BALL.CORRECT.P 619 . 767) (CHOOSE 769 . 839) (CLICK.FN 841 . 2157) (
+COMPUTE.ANGLE 2159 . 2389) (CREATE.BALL 2391 . 2658) (DRAW.BALL 2660 . 3876) (DRAW.RINGS 3878 . 4108) 
+(FORM.3.RINGS 4110 . 5290) (GAME.WON.P 5292 . 5416) (HUNGARIAN.RINGS 5418 . 7010) (MAKE.CIRCLES 7012
+ . 7917) (NGON.RADIUS 7919 . 8019) (PICK.RING.BY.ANGLE 8021 . 8394) (SHIFT.BALL.COLORS 8396 . 9308) (
+SHUFFLE.RINGS 9310 . 9849)))))
 STOP
