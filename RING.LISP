@@ -1,10 +1,10 @@
-(DEFINE-FILE-INFO PACKAGE "INTERLISP" READTABLE "INTERLISP" BASE 10)
+(DEFINE-FILE-INFO :PACKAGE "INTERLISP" :READTABLE "INTERLISP" :BASE 10)
 
-(FILECREATED "18-Nov-2025 17:02:09" {DSK}<home>ryan>il>RING.LISP;37 10169  
+(FILECREATED "29-Jul-2026 01:02:04" {DSK}<home>ryan>il>RING.LISP;39 10858  
 
-      :CHANGES-TO (FNS HUNGARIAN.RINGS)
+      :CHANGES-TO (FNS HUNGARIAN.RINGS SHUFFLE.RINGS)
 
-      :PREVIOUS-DATE "18-Nov-2025 15:17:14" {DSK}<home>ryan>il>RING.LISP;36)
+      :PREVIOUS-DATE "18-Nov-2025 17:02:09" {DSK}<home>ryan>il>RING.LISP;37)
 
 
 (PRETTYCOMPRINT RINGCOMS)
@@ -149,9 +149,10 @@
 
 (HUNGARIAN.RINGS
   [LAMBDA NIL
-    (LET* ((W (DECODE.WINDOW.ARG NIL 480.0 480.0 
-                     "HUNGARIAN RINGS (Mouse btns rotate. Middle click for menu.)"))
-           (SOLVE.WINDOW (DECODE.WINDOW.ARG NIL 480.0 480.0 "SOLUTION PICTURE (EXACT POSITIONS)"))
+    (LET* ((SIDE.LENGTH 360)
+           (W (DECODE.WINDOW.ARG NIL SIDE.LENGTH SIDE.LENGTH "HUNGARIAN RINGS PUZZLE"))
+           (SOLVE.WINDOW (CREATEW (CREATEREGION 0 0 SIDE.LENGTH (PLUS SIDE.LENGTH 120))
+                                "INSTRUCTIONS"))
            [WIN.BITMAP (BITMAPCREATE (WINDOWPROP W 'WIDTH)
                               (WINDOWPROP W 'HEIGHT]
            (BUFFER.STREAM (DSPCREATE WIN.BITMAP))
@@ -164,6 +165,7 @@
                               CIRCS.LIST _ CIRCS.LIST
                               BUFFER.STREAM _ BUFFER.STREAM
                               WIN.BITMAP _ WIN.BITMAP)))
+          (ATTACHWINDOW SOLVE.WINDOW W 'LEFT 'BOTTOM)
 
           (* ;; " Now we add the GAME.STATE which is very important!")
 
@@ -173,6 +175,11 @@
 
           (DRAW.RINGS CIRCS.LIST BUFFER.STREAM)
           (BITBLT WIN.BITMAP 0 0 SOLVE.WINDOW)
+          (for S in '("Instructions:" "- The image below shows a solved puzzle." 
+  "- In the other puzzle window, click inside a ring with left and right mouse buttons to rotate it."
+                            "- The puzzle will flash three times when solved." "" "Solved: ")
+             do (PRIN1 S SOLVE.WINDOW)
+                (TERPRI SOLVE.WINDOW))
           (SHUFFLE.RINGS CIRCS.LIST)
 
           (* ;; " Blitting once is faster than writing directly to window")
@@ -238,15 +245,21 @@
                 (for C in BALL.COLORS as B in BALL.LIST do (replace COLOR of B with C])
 
 (SHUFFLE.RINGS
-  [LAMBDA (RING.LISTS)
+  [LAMBDA (RING.LISTS HARD.MODE)
 
     (* ;; "This algorithm is ham-fisted. Better shuffling is left as an exercise to the reader")
 
     (LET* [[LARGEST.COUNT (APPLY 'MAX (MAPCAR RING.LISTS 'LENGTH]
-           (NUM.TURNS (TIMES LARGEST.COUNT (LENGTH RING.LISTS]
-          (for I from 1 to (TIMES 2 NUM.TURNS) do (SHIFT.BALL.COLORS (CHOOSE RING.LISTS)
-                                                         (- 1 (TIMES 2 (RAND 0 1)))
-                                                         (RAND 1 2])
+           (NUM.TURNS (ROUND (TIMES 2 LARGEST.COUNT (LENGTH RING.LISTS)
+                                    (if HARD.MODE
+                                        then 1
+                                      else 1/3]
+          (PRIN1 "Shuffling ")
+          (PRIN1 NUM.TURNS)
+          (PRIN1 " Times.")
+          (for I from 1 to NUM.TURNS do (SHIFT.BALL.COLORS (CHOOSE RING.LISTS)
+                                               (- 1 (TIMES 2 (RAND 0 1)))
+                                               (RAND 1 2])
 )
 (DECLARE%: EVAL@COMPILE
 
@@ -255,9 +268,9 @@
 (RECORD GAME.STATE (CIRCS.LIST BUFFER.STREAM WIN.BITMAP))
 )
 (DECLARE%: DONTCOPY
-  (FILEMAP (NIL (615 10012 (BALL.CORRECT.P 625 . 773) (CHOOSE 775 . 845) (CLICK.FN 847 . 2163) (
-COMPUTE.ANGLE 2165 . 2395) (CREATE.BALL 2397 . 2664) (DRAW.BALL 2666 . 3882) (DRAW.RINGS 3884 . 4114) 
-(FORM.3.RINGS 4116 . 5296) (GAME.WON.P 5298 . 5422) (HUNGARIAN.RINGS 5424 . 7171) (MAKE.CIRCLES 7173
- . 8078) (NGON.RADIUS 8080 . 8180) (PICK.RING.BY.ANGLE 8182 . 8555) (SHIFT.BALL.COLORS 8557 . 9469) (
-SHUFFLE.RINGS 9471 . 10010)))))
+  (FILEMAP (NIL (629 10701 (BALL.CORRECT.P 639 . 787) (CHOOSE 789 . 859) (CLICK.FN 861 . 2177) (
+COMPUTE.ANGLE 2179 . 2409) (CREATE.BALL 2411 . 2678) (DRAW.BALL 2680 . 3896) (DRAW.RINGS 3898 . 4128) 
+(FORM.3.RINGS 4130 . 5310) (GAME.WON.P 5312 . 5436) (HUNGARIAN.RINGS 5438 . 7627) (MAKE.CIRCLES 7629
+ . 8534) (NGON.RADIUS 8536 . 8636) (PICK.RING.BY.ANGLE 8638 . 9011) (SHIFT.BALL.COLORS 9013 . 9925) (
+SHUFFLE.RINGS 9927 . 10699)))))
 STOP
