@@ -21,4 +21,5 @@ To play the game you have two options. The online emulator provides very easy ac
 1. Place the file in the root directory of your medley install and follow steps 2 onward.
 This is '~/il/' for me on Linux. Consult the docs for where your root directory for Medley is otherwise.
 
-<img width="1920" height="1030" alt="Screenshot_20251109_001737" src="https://github.com/user-attachments/assets/d6d38935-06ef-43e4-99c0-defbaff9be64" />
+<img width="1006" height="1018" alt="Screenshot_20260729_011638" src="https://github.com/user-attachments/assets/1ca52ea8-d5be-46cc-af82-d512df99c51f" />
+
